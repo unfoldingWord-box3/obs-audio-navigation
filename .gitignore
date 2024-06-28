@@ -73,11 +73,11 @@ typings/
 /build
 
 # public (only used locally for testing)
-public/*
-!public/css
-!public/favicon.ico
-!public/index.html
-!public/manifest.json
+# public/*
+# !public/css
+# !public/favicon.ico
+# !public/index.html
+# !public/manifest.json
 
 
 # misc
