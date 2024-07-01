@@ -1,3 +1,5 @@
+import { pad } from '../utils/obj-functions'
+
 export const obsHierarchy = [
   {
     title: "Beginning",
@@ -166,3 +168,16 @@ export const obsNbrPictures = [
   18,
   17 //50
 ]
+
+export const obsStoryList = obsTitles.map((obj,inx) => {
+  return {
+    id: inx,
+    title: obj,
+    // descr: "",
+    image: {
+      "origin": "Local",
+      "filename": `/obsIcons/obs-en-${pad(inx+1)}-01.jpg`
+    },
+    filename: `/audio/en_obs_${pad(inx+1)}_32kbps.mp3`
+  }
+})

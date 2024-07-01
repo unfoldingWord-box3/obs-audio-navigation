@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { PlayerInfo } from '../components/player-info.js'
-import Sound from './sound.js'
+import { PlayerInfo } from '../components/player-info'
+import Sound from './sound'
 // import SoundCloud from './sound-cloud'
 import useMediaPlayer from "../hooks/useMediaPlayer"
 import useBrowserData from '../hooks/useBrowserData'
@@ -54,8 +54,8 @@ const Footer = () => {
       if (value==null){
         value=0
       }
-      if ((obj!=null)&&(obj.curSerie!=null)&&(obj.curSerie.fileList!=null)
-          &&(obj.curEp!=null)&&((obj.curSerie.fileList.length-1)===obj.curEp.id)){
+      if ((obj!=null)&&(obj.curSerie!=null)&&(obj.curSerie.episodeList!=null)
+          &&(obj.curEp!=null)&&((obj.curSerie.episodeList.length-1)===obj.curEp.id)){
         apiObjGetStorage(obj,"mSecDur").then((dur) => {
           const marginSec = 3 // minimum sec for play - else repeat from beginning
           if (value+(marginSec*1000)>dur){

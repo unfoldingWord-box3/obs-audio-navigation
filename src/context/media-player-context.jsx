@@ -26,15 +26,15 @@ console.log("onFinishedPlaying")
       const {curSerie, curEp} = state.curPlay
   console.log(curSerie)
       if (curSerie){
-        if ((curSerie.fileList!=null) && (curSerie.fileList.length>0)
+        if ((curSerie.episodeList!=null) && (curSerie.episodeList.length>0)
             && (curEp!=null)){
           // This serie has episodes
           let epInx = curEp.id
           epInx+=1
           let newPlayObj = {curSerie}
           apiObjSetStorage(newPlayObj,"curEp",epInx)
-          if (curSerie.fileList[epInx]!=null){
-            newPlayObj.curEp=curSerie.fileList[epInx]
+          if (curSerie.episodeList[epInx]!=null){
+            newPlayObj.curEp=curSerie.episodeList[epInx]
           }
           setStateKeyVal( "curPlay", newPlayObj)
         }
@@ -62,9 +62,9 @@ console.log("onFinishedPlaying")
       setStateKeyVal( "curPlay", newPlayObj)
     } else {
       let tmpEp = curEp
-      if ((!tmpEp) && (curSerie.fileList!=null)
-          && (curSerie.fileList[inx]!=null)){
-        tmpEp=curSerie.fileList[inx]
+      if ((!tmpEp) && (curSerie.episodeList!=null)
+          && (curSerie.episodeList[inx]!=null)){
+        tmpEp=curSerie.episodeList[inx]
       }
       // This serie has episodes
       let newPlayObj = {curSerie,curEp}
@@ -74,14 +74,14 @@ console.log("onFinishedPlaying")
         setStateKeyVal( "curPlay", newPlayObj)
       } else {
         apiObjGetStorage(newPlayObj,"curEp").then((value) => {
-          if ((value==null)||(curSerie && curSerie.fileList && curSerie.fileList[value]==null)){
+          if ((value==null)||(curSerie && curSerie.episodeList && curSerie.episodeList[value]==null)){
             value=0
             apiObjSetStorage(newPlayObj,"curEp",0)
           }
-          if (curSerie && curSerie.fileList && curSerie.fileList[value]!=null){
-            newPlayObj.curEp=curSerie.fileList[value]
+          if (curSerie && curSerie.episodeList && curSerie.episodeList[value]!=null){
+            newPlayObj.curEp=curSerie.episodeList[value]
           }
-//            props.onStartPlay && props.onStartPlay(curSerie,curSerie.fileList[value])
+//            props.onStartPlay && props.onStartPlay(curSerie,curSerie.episodeList[value])
           setStateKeyVal( "curPlay", newPlayObj)
         }).catch((err) => {
           console.error(err)

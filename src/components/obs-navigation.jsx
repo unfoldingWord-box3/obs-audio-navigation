@@ -1,34 +1,27 @@
 import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
-import Fab from '@material-ui/core/Fab'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import ImageList from '@material-ui/core/ImageList'
-import ImageListItem from '@material-ui/core/ImageListItem'
-import ImageListItemBar from '@material-ui/core/ImageListItemBar'
+import Typography from '@mui/material/Typography'
+import Fab from '@mui/material/Fab'
+import ChevronLeft from '@mui/icons-material/ChevronLeft'
+import ImageList from '@mui/material/ImageList'
+import ImageListItem from '@mui/material/ImageListItem'
+import ImageListItemBar from '@mui/material/ImageListItemBar'
 import { rangeArray, pad } from '../utils/obj-functions'
-import { obsHierarchy, obsTitles, obsNbrPictures } from '../constants/obsHierarchy'
+import { obsHierarchy, obsTitles, obsNbrPictures, obsStoryList } from '../constants/obsHierarchy'
 import useBrowserData from '../hooks/useBrowserData'
 
 const bibleData = {
-  "freeType": false,
-  "pathPattern": [
-      1,
-      "_",
-      3,
-      "_",
-      2,
-      "_ENGWEBN2DA.mp3"
-  ],
-  "curPath": "shared/audio/English/English_NT",
-  "title": "Audiobible NT",
-  "image": {
-      "origin": "Local",
-      "filename": "img/ser07.jpg"
+  freeType: false,
+  curPath: "",
+  title: "Open Bible Stories",
+  description: "",
+  image: {
+      origin: "Local",
+      filename: ""
   },
-  "language": "eng",
-  "mediaType": "bible"
+  language: "eng",
+  mediaType: "bible",
+  episodeList: obsStoryList,
 }
-
 
 const SerieGridBar = (props) => {
   // eslint-disable-next-line no-unused-vars
@@ -51,7 +44,6 @@ const OBSNavigation = (props) => {
   const [curLevel, setCurLevel] = useState(1)
   const [level1, setLevel1] = useState(1)
   const [level2, setLevel2] = useState("")
-  // ToDo !!! find a bibleBookList and use this here
   // eslint-disable-next-line no-unused-vars
   const [curList,setCurList] = useState((curSerie!=null) ? curSerie.bibleBookList : [])
 
@@ -61,16 +53,11 @@ const OBSNavigation = (props) => {
       setLevel1(id)
       setCurLevel(2)
     } else if (curLevel===2){
-      const bookObj = {}
-      const curSerie = {}
-      onStartPlay(curSerie,bookObj,id)
+      onStartPlay(curSerie,id)
       setLevel2(id)
       setCurLevel(3)
     } else {
-      // const bookObj = {}
-      // const curSerie = {}
-      // const bookObj = naviChapters[level1][level2][level3]
-      // // const {curSerie} = curPlay
+      // ToDo: Maybe we can allow navigation inside the stories here?
       // onStartPlay(curSerie,bookObj,id)
     }
   }
@@ -116,7 +103,6 @@ const OBSNavigation = (props) => {
         key: inx,
         imgSrc: `/obsIcons/obs-en-${pad(inx)}-01.jpg`,
         title: obsTitles[inx-1],
-        // subtitle: "test",
         isBookIcon: false
       }
       validIconList.push(curIconObj)
@@ -129,8 +115,6 @@ const OBSNavigation = (props) => {
       const curIconObj = {
         key: inx,
         imgSrc: `/obsIcons/obs-en-${pad(level2)}-${pad(inx)}.jpg`,
-        // title: obsTitles[inx],
-        // subtitle: "test",
         isBookIcon: false
       }
       validIconList.push(curIconObj)
@@ -140,20 +124,30 @@ const OBSNavigation = (props) => {
 
   const rootLevel = (curLevel===1)
   let useCols = 3
-  let rowHeight = ((size!=="xs") || (!rootLevel)) ? "auto" : undefined
+  let rowHeight = undefined
   if (curLevel===3) {
     useCols = 1
     rowHeight = width / 1.77
-  } else if (size==="xs" || size==="sm") {
+  } else if (size==="xs") {
     if (rootLevel) {
       useCols = 2
+      rowHeight = width / 2
     } else {
       useCols = 1
       rowHeight = width / 1.77
     }
+  } else if (size==="sm") {
+    if (rootLevel) {
+      useCols = 3
+      rowHeight = width / 3
+    } else {
+      useCols = 2
+      rowHeight = width / 3.55
+    }
   } else if (size==="md" || size==="lg") {
     if (rootLevel) {
       useCols = 4
+      rowHeight = width / 4
     } else {
       useCols = 2
       rowHeight = width / 3.55
@@ -161,6 +155,7 @@ const OBSNavigation = (props) => {
   } else if (size==="xl") {
     if (rootLevel) {
       useCols = 5
+      rowHeight = width / 5
     } else {
       useCols = 3
       rowHeight = width / 5.33
@@ -171,7 +166,6 @@ const OBSNavigation = (props) => {
       {!rootLevel && (
         <Fab
           onClick={handleReturn}
-          // className={largeScreen ? classes.exitButtonLS : classes.exitButton}
           color="primary"
         >
           <ChevronLeft />

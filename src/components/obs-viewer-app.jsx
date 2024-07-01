@@ -22,16 +22,13 @@ const OBSPictureNavigationApp = () => {
   const mPlayObj = useMediaPlayer()
   const { startPlay, isPaused } = mPlayObj
 
-  const handleStartBiblePlay = (curSerie,bookObj,id) => {
-    const useSerie = { title: "OBSStory"}
-    const bk = "Gen"
-    const curEp = {
-      bibleType: true,
-      bk,
-      id,
-      filename: `/audio/en_obs_${pad(id)}_32kbps.mp3`
+  const handleStartBiblePlay = (curSerie,id) => {
+    const useInx = id-1
+    if (curSerie?.episodeList) {
+      if ((useInx>=0) && (useInx<curSerie?.episodeList?.length)) {
+        startPlay(id,curSerie,curSerie.episodeList[useInx])
+      }
     }
-    startPlay(id,useSerie,curEp)
   }
 return (
     <div style={defaultBackgroundStyle}>
