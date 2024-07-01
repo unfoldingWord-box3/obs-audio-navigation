@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { PlayerInfo } from '../components/player-info.js'
-import Sound from './sound.js'
+import { PlayerInfo } from '../components/player-info'
+import Sound from './sound'
 // import SoundCloud from './sound-cloud'
 import useMediaPlayer from "../hooks/useMediaPlayer"
 import useBrowserData from '../hooks/useBrowserData'

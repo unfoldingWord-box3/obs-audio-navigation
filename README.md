@@ -8,15 +8,15 @@ For development, Node.js needs to be installed.
 
     $ git clone https://github.com/ORG/PROJECT.git
     $ cd PROJECT
-    $ npm install
+    $ pnpm install
 
 ## Start - for development
 
-    $ npm start
+    $ pnpm run dev
 
 ## Build - for production
 
-    $ npm run build
+    $ pnpm run build
 
 ## Deploy
 

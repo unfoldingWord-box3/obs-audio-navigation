@@ -71,6 +71,7 @@ typings/
 
 # production
 /build
+/dist
 
 # public (only used locally for testing)
 # public/*
