@@ -1,6 +1,6 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
+import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 import { Download } from 'mdi-material-ui'
 
 const styles = {
@@ -244,7 +244,7 @@ console.log(ev)
   progressStyle.width = `${percent }%`
   let curEpTitle=""
   if (serie!=null){
-    if ((serie.fileList!=null) && (episode!=null) && (serie.fileList[0]!=null)) {
+    if ((serie.episodeList!=null) && (episode!=null) && (serie.episodeList[0]!=null)) {
       if (episode.title!=null){
         curEpTitle = episode.title
       } else {
