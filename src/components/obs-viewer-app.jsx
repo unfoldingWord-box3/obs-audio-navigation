@@ -2,7 +2,6 @@ import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import OBSNavigation from './obs-navigation'
 import useMediaPlayer from "../hooks/useMediaPlayer"
-import { pad } from '../utils/obj-functions'
 
 const theme = createTheme({
   palette: {
@@ -20,7 +19,7 @@ const defaultBackgroundStyle = {
 
 const OBSPictureNavigationApp = () => {
   const mPlayObj = useMediaPlayer()
-  const { startPlay, isPaused } = mPlayObj
+  const { startPlay, isPaused, syncImgSrc } = mPlayObj
 
   const handleStartBiblePlay = (curSerie,id) => {
     const useInx = id-1
@@ -38,6 +37,7 @@ return (
           onReset={() => console.log("onReset")}
           onExitNavigation={() => console.log("onExitNavigation")}
           onStartPlay={handleStartBiblePlay}
+          syncImgSrc={syncImgSrc}
         />
       </ThemeProvider>
     </div>

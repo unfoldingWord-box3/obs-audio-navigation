@@ -171,7 +171,7 @@ console.log("handleFinishedPlaying")
 //    locPath = getLocalMediaFName(locURL)
     locPath = locURL
   }
-  if (locURL.length>0) {
+  if (locURL?.length>0) {
     return (
       <footer
         id={idStr}

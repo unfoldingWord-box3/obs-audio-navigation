@@ -1,6 +1,7 @@
-import React, { useState  } from 'react'
+import React, { useState, useEffect, useCallback  } from 'react'
 import { apiSetStorage, apiObjGetStorage, apiObjSetStorage } from '../utils/api'
 import { unique } from 'shorthash'
+import { pad } from '../utils/obj-functions'
 
 const MediaPlayerContext = React.createContext([{}, () => {}])
 const MediaPlayerProvider = (props) => {
@@ -10,6 +11,32 @@ const MediaPlayerProvider = (props) => {
   const setStateKeyVal = (key,val) => setState(state => ({ ...state, [key]: val }))
 
   const [isPaused, setIsPaused] = useState(false)
+  const [imgPos, setImgPos] = useState({});
+
+  const fetchJSONDataFrom = useCallback(async (inx) => {
+    const response = await fetch(`data/img_pos${pad(inx +1)}.json`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await response.json();
+    setImgPos((prev) => ({
+      ...prev,
+      [inx]: data,
+    }));
+  }, []);
+
+  useEffect(() => {
+    const getDataForAllStories = async () => {
+      const maxStories = 50
+      for(let i=0; i < maxStories; i++) {
+        // Wait for each task to finish
+        await fetchJSONDataFrom(i);
+      }      
+    }
+    getDataForAllStories()
+  }, [fetchJSONDataFrom]);
 
   const togglePlay = () => {
 //    state.isPlaying ? player.pause() : player.play()
@@ -24,7 +51,6 @@ const MediaPlayerProvider = (props) => {
 console.log("onFinishedPlaying")
     if (state.curPlay) {
       const {curSerie, curEp} = state.curPlay
-  console.log(curSerie)
       if (curSerie){
         if ((curSerie.episodeList!=null) && (curSerie.episodeList.length>0)
             && (curEp!=null)){
@@ -48,7 +74,25 @@ console.log("onFinishedPlaying")
     setStateKeyVal( "curEp", undefined )
   }
 
+  const updateImgBasedOnPos = ( curInx, msPos ) => {
+    let checkMsPosArray = []
+    if (imgPos) {
+      checkMsPosArray = imgPos[ curInx ]
+    }
+    let retImgSrc = `${pad(curInx+1)}-01`
+    checkMsPosArray?.map(checkObj => {
+      const checkMs = parseInt(checkObj.pos) * 1000
+      if (msPos>=checkMs) retImgSrc = checkObj.img
+    })
+    return `obsIcons/obs-en-${retImgSrc}.jpg`
+  }
+
   const onPlaying = (curPos) => {
+    const curImgSrc = state?.syncImgSrc
+    const curInx = state?.curEp?.id
+    const msPos = curPos?.position
+    const nextImgSrc = updateImgBasedOnPos( curInx, msPos )
+    if (nextImgSrc!==curImgSrc) setStateKeyVal( "syncImgSrc", nextImgSrc )
     setStateKeyVal( "curPos", curPos )
   }
 
@@ -93,7 +137,9 @@ console.log("onFinishedPlaying")
 //      await updateStorage("navHist",navHist)
       await updateStorage("curSerId",curSerId)
 //      setState(state => ({...state, navHist,  curSerId, curSerie, curEp: tmpEp}))
-      setState(state => ({...state, curSerId, curSerie, curEp: tmpEp}))
+      const curInx = tmpEp?.id
+      const syncImgSrc = updateImgBasedOnPos( curInx, 0 )
+      setState(state => ({...state, syncImgSrc, curSerId, curSerie, curEp: tmpEp}))
     }
   }
 

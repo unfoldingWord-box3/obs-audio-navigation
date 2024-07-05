@@ -38,7 +38,7 @@ const OBSNavigation = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { size, width } = useBrowserData()
   // const { curPlay } = useMediaPlayer()
-  const { onExitNavigation, onStartPlay } = props
+  const { onExitNavigation, onStartPlay, syncImgSrc } = props
   // const curSerie = (curPlay!=null) ? curPlay.curSerie : undefined
   const curSerie = bibleData
   const [curLevel, setCurLevel] = useState(1)
@@ -208,19 +208,12 @@ const OBSNavigation = (props) => {
           rowHeight={rowHeight}
           cols={useCols}
         >
-        {validIconList.map(iconObj => {
-          const {key,imgSrc,title,isBookIcon} = iconObj
-          return (
-            <ImageListItem
-              onClick={(ev) => handleClick(ev,key,isBookIcon)}
-              key={key}
-            >
-              <img
-                src={imgSrc}
-                alt={title}/>
-            </ImageListItem>
-          )
-        })}
+          <ImageListItem
+            onClick={(ev) => handleClick(ev,"1",false)}
+            key="1"
+          >
+            <img src={syncImgSrc} />
+          </ImageListItem>
         </ImageList>
         <Typography
           type="title"
